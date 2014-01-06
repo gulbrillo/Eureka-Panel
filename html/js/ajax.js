@@ -1,3 +1,9 @@
+//login
+$(document).on('click', '#welcome #welcome_login #welcome_send', function() {
+        $('#welcome').addClass("login");
+});
+        
+
 //close DNS drawers anywhere outside of div #dns_update
 $(document).on('focus click', 'body', function(e) {
     var target = $(e.target);  
@@ -19,7 +25,8 @@ $(document).on('click', '#DNSselected label', function() {
 
 //submit custom DNS
 
-$(document).on('click','#DNScustom #SENDcustomDNS',function(e) {
+function submitDNS(){
+
 var form = $('#customDNSform');
 var data = form.serialize();
 
@@ -47,8 +54,33 @@ var data = form.serialize();
         });
 
 
+}
+
+// on click on send
+
+$(document).on('click','#DNScustom #SENDcustomDNS',function(e) {
+
+	$(submitDNS);
 
 });
+
+// on enter
+
+$(document).on('keypress','#DNScustom #dns1field',function(e) {
+
+	$('#dns2field').focus();
+
+});
+
+$(document).on('keypress','#DNScustom #dns2field',function(e) {
+
+         if (e.which == 13)
+         {
+         $(submitDNS);
+         }
+
+});
+ 
 
 
 //on('change') geht auch, aber dann nimmt er den bereits ausgewaehlten nicht. man haette die liste auch einfach unausgewaehlt lassen koennen... zu spaet.
@@ -93,6 +125,10 @@ $(document).on('click', '#DNSselection input:radio', function() {
 		}
 	});
 
-	} else {$('#DNScustom').addClass("show");}
+	} else {
+		$('#DNScustom').addClass("show");
+//		$('#dns1field').focus();
+		}
 
 });
+
