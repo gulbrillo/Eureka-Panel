@@ -15,11 +15,29 @@ background: #9C9C9C;
 	background: #484848; 
 }
 
+html {100%}
 body {font-family: 'Roboto', sans-serif; font-weight: 300; font-size:15px;background-color:#DDD;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;         /* Opera/IE 8+ */
-overflow-x: hidden;}
+overflow-x: hidden;
+overflow-y: scroll;
+margin:0;
+padding:0;
+height: 100%;
+color:#000;
+}
+
+#page {
+position:relative;
+min-height: 100%;
+height:100%;
+}
+
+#scrollable {
+margin:0;
+padding:0;
+}
 
 input:focus,
 select:focus,
@@ -41,7 +59,14 @@ visibility:hidden;
 .version {float:right;padding: 12px 20px 0px 0px;font-size: 13px;}
 img.chromelogo {width:205px;height:40px;}
 #top {height:160px;}
+
 #cards{clear:both;margin:auto;width:1585px;z-index:20;}
+.clearspace{
+position: relative;
+clear:both;
+height:50px;
+}
+
 .card {background-color:#ffffff;float:left;padding:12px 20px;margin:30px 35px;width:286px;height:224px;z-index:30;
 -moz-box-shadow: 0px 0px 9px #999;
 -webkit-box-shadow: 0px 0px 9px #999;
@@ -225,6 +250,8 @@ bottom:0;
 margin-bottom:-20px;
 height:162px;
 overflow-y: scroll;
+
+background-color:#fff;
 }
 
 #DNSselected {
@@ -530,6 +557,122 @@ transition: all .3s ease-out;
 opacity:1;
 }
 
+/* WELCOME */
+
+#bottom {
+position:fixed;
+bottom:0px;
+height:40px;
+max-height:40px;
+overflow:hidden;
+width:100%;
+background-color:#FFC033;
+z-index:100;
+}
+
+#welcome {
+clear:both;
+position: fixed;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+background-color:#EEE;
+width:100%;
+height:100%;
+padding:20px;
+top:0%;
+text-align:center;
+z-index:90;
+overflow:hidden;
+}                
+
+#welcome.login {
+top:100%;
+transition: all .4s ease-out;
+}
+
+#welcome .content {
+position:relative;
+height:100%;
+width:100%;
+}
+
+#welcome .centerme {
+position: absolute;
+top:40%;
+width:100%;
+}
+
+#welcome .centerme_backtrack {
+position: absolute;
+top:-120px;
+width:100%;
+}
+
+#welcome .box {
+padding:40px;
+position: relative;
+width:470px;
+height:170px;
+margin:auto;
+background-color:#DDD;
+}
+
+#welcome #welcome_login {
+position: relative;
+margin:auto;
+}
+
+#welcome #welcome_login #welcome_pass {
+float:left;
+margin-left:15px;
+margin-top:40px;
+line-height: 42px;
+height:42px;
+background-color:#FFF;
+overflow:hidden;
+}
+
+#welcome #welcome_login #welcome_send {
+float:left;
+width: 110px;
+margin-top:40px;
+line-height: 42px;
+height:42px;
+background-color:#9C9C9C;
+font-size:24px;
+font-weight:100;
+overflow:hidden;
+color:#fff;
+cursor:pointer;
+}
+
+#welcome #welcome_login #welcome_send:hover {
+background-color:#ffc033;
+color:#000;
+}
+
+#welcome #welcome_logo {
+position: relative;
+margin:auto;
+width:439px;
+height:88px;
+background-image:url("images/cwp.svg");
+color:#000;
+}
+
+#welcome #welcome_login  input[type='password'] {
+font-size:24px;
+font-family: 'Roboto', sans-serif; font-weight: 300;
+background-color:#FFF;
+border:none;
+width:318px;
+padding:5px;
+padding-left:7px;
+margin:0;
+}
+
+
 /* BEGIN CIRCLES */
 
 
@@ -813,9 +956,63 @@ opacity:1;
     }
     #top {height:130px;transition: all 1s ease;}
     #bottom {height:80px;}
-    .ccserial{float:right;padding: 12px 20px 0px 0px;clear:both;}
-    .version{clear:both;}
+    .ccserial{float:right;padding: 0;clear:both;padding-right:15px;padding-top:0px;}
+    .version{clear:both;padding:0;clear:both;padding-right:15px;padding-top:3px;}
     #twitter-widget-1 {opacity:1;}
+    
+    
+   #bottom {
+   position:relative;
+   min-height:40px;
+   height:auto;
+   max-height:400px;
+   overflow:hidden;
+   padding: 10px 0;
+   }
+    
+   #scrollable {
+   margin-bottom:40px;
+   } 
+
+
+   #welcome .box {
+   padding:20px;
+   width:278px;
+   height:122px;
+   }
+
+   #welcome #welcome_logo {
+   width:270px;
+   height:54px;
+   background-size: 270px 54px;   
+   }   
+
+   #welcome #welcome_login #welcome_pass {
+   margin-left: 2px;
+   margin-top: 25px;
+   }
+   
+   #welcome #welcome_login  input[type='password'] {
+   width:178px;
+   font-size:24px;
+   }
+
+   #welcome #welcome_login #welcome_send {
+   margin-top: 25px;
+   width:85px;
+   font-size:20px;
+   }
+
+   #welcome .centerme {
+   position: absolute;
+   top:50%;
+   width:100%;
+   }
+   
+   #welcome .centerme_backtrack { 
+   top:-120px; 
+   }
+   
     }    
 @media screen and (max-width: 396px) {
     #cards {width:326px;}
