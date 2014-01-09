@@ -1,5 +1,7 @@
 #include "stdio.h"
+#include "cgic.h"
 #include "stdlib.h"
+#include "time.h"
 #include "unistd.h"
 #include "assert.h"
 #include "string.h"
@@ -30,6 +32,10 @@
 #include "cards/card_dns.c"
 #include "cards/card_dns_front.c"
 #include "cards/card_dns_back.c"
+#include "cards/card_security.c"
+#include "cards/card_security_front.c"
+#include "cards/card_security_back.c"
+
 
 #define sizearray(a)  (sizeof(a) / sizeof((a)[0]))
 #define QS_LEN 65536
@@ -38,7 +44,144 @@
 //This is the main web panel application that includes all portal modules
 //Please make modules where possible, and include them. Only modify this if necessary
 
-int processPostData(char *postData)
+int CookieCheck()
+{
+char password[1024];
+char protected[1024];
+char session[1024];
+char cookie[1024];
+
+read_config_var("Security", "webprotected", protected);
+read_config_var("Security", "pass", password);
+
+if (compStr(protected, "undefined", 1024) || !compStr(protected, "true", 1024) || compStr(password, "undefined", 1024)) {
+	return 1;	
+	} else {
+		read_config_var("Security", "session", session);
+
+
+		if (cgiCookieString("session", cookie, sizeof(cookie)) == cgiFormSuccess) {
+		if (compStr(session, cookie, 1024) && !compStr(session, "undefined", 1024))
+			{return 1;}
+		else
+			{return 0;}
+		} else {
+			return 0;
+		}
+	}
+
+}
+
+void CookieSet()
+{
+  char *cname = "session";
+  char *cvalue;
+  char *path="/";
+
+  int r;
+
+    FILE *ptr_file;
+    char command[300];
+    char buf[1024];
+
+  srand ( (unsigned)time ( NULL ) );
+  r = rand();
+
+
+    snprintf(command, sizeof command, "echo -n '%d' | busybox sha1sum | busybox awk -F \" \" '{print $1}' | busybox tr '\n' ' ' | busybox tr -d ' '", r);
+
+    ptr_file=popen(command,"r");
+       while (fgets(buf,1000, ptr_file)!=NULL)
+       {
+          cvalue = buf;
+       }
+    pclose(ptr_file);
+
+          write_config_var("Security", "session", buf);
+
+if (strlen(cname) && strlen(cvalue)) {
+//    cgiHeaderCookieSetString(cname, cvalue, 1200, cgiScriptName, cgiServerName);
+//      cgiHeaderCookieSetString(cname, cvalue, 1200, path, cgiServerName);
+      printf("Content-type: text/html\n");
+      printf("Set-Cookie: %s=%s; Path=/; Domain=%s; HttpOnly\n\n", cname, cvalue, cgiServerName);	
+
+  }
+}
+
+int processLogin()
+{
+
+    char value[80];
+    int n;
+    FILE *ptr_file;
+    char command[200];
+    char buf[1024];
+    char *sha1pass;
+
+    cgiFormStringNoNewlines("action", value, 80);
+    if(compStr(value, "login", sizearray(value)))
+    {
+    cgiFormStringNoNewlines("welcome_password", value, 80);
+
+
+    snprintf(command, sizeof command, "echo -n '%s' | busybox sha1sum | busybox awk -F \" \" '{print $1}' | busybox tr '\n' ' ' | busybox tr -d ' '", value);
+
+    ptr_file=popen(command,"r");
+       while (fgets(buf,1000, ptr_file)!=NULL)
+       {
+	 strcpy(sha1pass, buf);
+       }
+    pclose(ptr_file);
+
+	read_config_var("Security", "pass", buf);
+//	printf("%s = %s?", buf, sha1pass);
+
+
+//	n = write_config_var("Security", "pass", sha1pass);
+
+	if ( compStr(sha1pass, buf, 1024) )
+		return 1;
+	else
+		return 0;
+
+    }
+
+}
+
+void writenewPass()
+{
+
+    char value[80];
+    int n;
+    FILE *ptr_file;
+    char command[200];
+    char buf[1024];
+//    char *sha1pass;
+
+    cgiFormStringNoNewlines("newpass1", value, 80);
+
+    snprintf(command, sizeof command, "echo -n '%s' | busybox sha1sum | busybox awk -F \" \" '{print $1}' | busybox tr '\n' ' ' | busybox tr -d ' '", value);
+
+    ptr_file=popen(command,"r");
+       while (fgets(buf,1000, ptr_file)!=NULL)
+       {
+//	printf("sha: %s, buf: %s<p>", sha1pass, buf);
+	n = write_config_var("Security", "pass", buf);
+//         strcpy(sha1pass, buf);
+       }
+    pclose(ptr_file);
+
+//       read_config_var("Security", "pass", buf);
+//      printf("%s = %s?", buf, sha1pass);
+
+
+//      n = write_config_var("Security", "pass", sha1pass);
+
+}
+
+
+
+int processPostData()
 {
 
     char *token;
@@ -53,17 +196,35 @@ int processPostData(char *postData)
     char smartDnsProviderSecondary[1024];
     int n;
 
-    sscanf(postData, "action=%[0-9a-zA-Z]", &action);
-    if(compStr(action, "update", sizearray(action)))
+    char **array, **arrayStep;
+
+    char fieldvalue[100];
+    cgiFormStringNoNewlines("action", value, 80);
+
+//  sscanf(postData, "action=%[0-9a-zA-Z]", &action);
+    if(compStr(value, "update", sizearray(value)))
     {
-        token = strtok (postData,"&");
-        while (token != NULL)
-        {
+//        token = strtok (postData,"&");
+//        while (token != NULL) {
+
+//GO THROUGH ALL FORM KEY/VALUES
+          if (cgiFormEntries(&array) == cgiFormSuccess) {
+
+	  arrayStep = array;
+
+	while (*arrayStep) {
+
             //check if contains "/" so we know it's a var to update
-            urldecode2(decodedToken, token);
-            if(strstr(decodedToken, "/") != NULL)
+//            urldecode2(decodedToken, token);
+
+
+	    if(strchr(*arrayStep, '/'))
             {
-                sscanf(decodedToken, "%[0-9a-zA-Z]/%[0-9a-zA-Z]=%[0-9a-zA-Z.:/_%-]", section, field, value);
+
+		cgiFormStringNoNewlines(*arrayStep, value, 80);
+		sscanf(*arrayStep, "%[0-9a-zA-Z]/%[0-9a-zA-Z]", section, field);
+
+//                sscanf(decodedToken, "%[0-9a-zA-Z]/%[0-9a-zA-Z]=%[0-9a-zA-Z.:/_%-]", section, field, value);
                 //check if DNS update and allowed to perform
                 if(compStr(section, "DNS", sizearray(section)) && !compStr(field, "useDHCP", sizearray(field)) && (smartDnsUpdatePerformed == 1))
                 {
@@ -87,15 +248,22 @@ int processPostData(char *postData)
                     //set that DNS update has been performed so any unwanted commits don't occur after
                     smartDnsUpdatePerformed=1;
                 }
+
+
             }
-            token = strtok (NULL, "&");
+//            token = strtok (NULL, "&");
+		arrayStep++;
         }
 
+	cgiStringArrayFree(array);	
+
+	}
     }
 }
 
+
 //main function for web services
-int main(void)
+int cgiMain()
 {
 
     long n;
@@ -111,10 +279,7 @@ int main(void)
     char *headers;
     char *page = NULL;
     const char *key, *value;
-    char *postBuffer = NULL;
-    int postRead;
     unsigned int postLen;
-    char postData[4096];
     char * queryString;
     char query_action[1024];
     char query_section[1024];
@@ -128,8 +293,9 @@ int main(void)
 
     FILE *ptr_file;
 
+
     //Operations if POST detected
-    if(compStr(getenv("REQUEST_METHOD"), "POST", sizearray(getenv("REQUEST_METHOD"))))
+    if(compStr(cgiRequestMethod, "POST", sizearray(cgiRequestMethod)))
     {
         if (getenv("QUERY_STRING"))
         {
@@ -144,43 +310,119 @@ int main(void)
                 token = strtok (NULL, "&");
             }
         }
-        postRead = getline(&postBuffer, &postLen, stdin);
-        if (-1 != postRead)
-        {
-            strcpy(postData, postBuffer);
-        }
         if (compStr(strPage, "debug", sizearray(strPage) ))
         {
-            sscanf(postData, "page=debug&command=%[^,]", command);
-            urldecode2(decodedCommand, command);
+		cgiHeaderContentType("text/html");
+	if( CookieCheck() ) {
+//            sscanf(postData, "page=debug&command=%[^,]", command);
+//            urldecode2(decodedCommand, command);
 //            web_module_headers(strPage);
 	    card_layout_header();
             web_module_debug(decodedCommand);
 //            web_module_footer();
 	    card_layout_footer();
+	}
         }
-        if (compStr(strPage, "dns", sizearray(strPage) ))
+        else if ( compStr(strPage, "dns", sizearray(strPage)) )
         {
-		processPostData(postData);
+		cgiHeaderContentType("text/html");
+	if( CookieCheck() ) {
+		processPostData();
 		//reload dhcp for DNS change to take effect
 			ptr_file=popen("dhcpcd  -n mlan0","r");
 			sleep(1);
 			pclose(ptr_file);
 		card_dns_front();
+	}
         }
-        free(postBuffer);
+        else if ( compStr(strPage, "newpass", sizearray(strPage)) )
+        {
+        if( CookieCheck() ) {
+
+    char newpass1[80];
+    char newpass2[80];
+
+    cgiFormStringNoNewlines("newpass1", newpass1, 80);
+    cgiFormStringNoNewlines("newpass2", newpass2, 80);
+	    if(compStr(newpass1, newpass2, 80) && newpass1[0] != '\0')
+		{
+			CookieSet();
+
+printf("\n<script>");
+printf("\n(function($)");
+printf("\n{");
+printf("\n    $(document).ready(function()");
+printf("\n    {");
+printf("\n        $('#logout').removeClass(\"invisible\")");
+printf("\n    });");
+printf("\n})(jQuery);");
+printf("\n</script>");
+
+
+			printf("<div class=\"actiontaken\">Password updated</div>");
+			
+			writenewPass();
+
+	                processPostData();
+	//Todo: RELOAD SSH Server and maybe kill session?
+	                card_security_front();
+		} else {
+			cgiHeaderContentType("text/html");
+			printf("<div class=\"actiontaken\">No match, try again</div>");
+			card_security_front();
+		}
+        }
+        }
+	else if ( compStr(strPage, "security", sizearray(strPage)) )
+        {
+		cgiHeaderContentType("text/html");
+        if( CookieCheck() ) {
+		processPostData();
+		card_security_front();
+	}
+	}
+        else if (compStr(strPage, "login", sizearray(strPage) ))
+        {
+		if( processLogin() ) {
+			CookieSet();
+//			cgiHeaderContentType("text/html");
+			printf("Correct");
+		} else {
+			cgiHeaderContentType("text/html");
+			printf("Wrong");
+		}
+	        	
+        }
+        else if (compStr(strPage, "verify", sizearray(strPage) ))
+        {
+                if( CookieCheck() ) {
+                        cgiHeaderContentType("text/html");
+                        printf("Correct");
+                } else {
+                        cgiHeaderContentType("text/html");
+                        printf("Wrong");
+                }
+
+        }
+	else
+	{
+		cgiHeaderContentType("text/html");
+		card_layout_header();
+		printf("You should not be here. Like never. Do you have JavaScript and Cookies enabled?");
+		card_layout_footer();
+	}
+
     }
     else
     {
+
+    //WITHOUT POST THERE IS NO LOGIN, SO PRINT HEADERS. But: this, if possible, should be all done with ajax and POST.
+    cgiHeaderContentType("text/html");
+
         if (!getenv("QUERY_STRING"))
         {
             //no query string
 	    card_layout_header();
-	    card_twitter();
-	    card_network();
-	    card_status();
-	    card_dns();
-	    card_wifi();
             card_layout_footer();
         }
         if (getenv("QUERY_STRING"))
@@ -210,6 +452,10 @@ int main(void)
                 token = strtok (NULL, "&");
             }
             // Call this before headers
+	    if ( compStr(strPage, "logout", sizearray(strPage) ))
+	    {
+		write_config_var("Security", "session", "");
+            }
             if ( compStr(strPage, "dumpstate", sizearray(strPage) ))
             {
                 dumpstate();
@@ -221,7 +467,6 @@ int main(void)
             }
             else
             {
-//                web_module_headers(strPage);
 	       card_layout_header();
 
             }
@@ -232,6 +477,7 @@ int main(void)
 
 
 // for auto update
+if( CookieCheck() ) {
             if ( compStr(strPage, "wifi_front", sizearray(strPage) ))
             {
                 card_wifi_front();
@@ -244,15 +490,26 @@ int main(void)
             {
                 card_dns_front();
             }
-
-
-
-            if ( compStr(strPage, "welcome", sizearray(strPage) ))
+            if ( compStr(strPage, "cards", sizearray(strPage) ))
             {
-            card_twitter();
-            card_status();
-            card_wifi();
+               card_twitter();
+               card_network();
+               card_status();
+               card_dns();
+               card_wifi();
+	       card_security();
             }
+} else {
+
+ printf("\n<script type=\"text/javascript\">");
+ printf("\n$(function() {");
+ printf("\nwindow.location.replace(\"/test/\");");
+ printf("\n});");
+ printf("\n</script>");
+
+}
+
+
             if ( compStr(strPage, "logcat", sizearray(strPage) ))
             {
                 web_module_logcat();
@@ -264,14 +521,6 @@ int main(void)
             if ( compStr(strPage, "debug", sizearray(strPage) ))
             {
                 web_module_debug(command);
-            }
-            if ( compStr(strPage, "settings", sizearray(strPage) ))
-            {
-//                web_module_settings();
-            }
-            if ( compStr(strPage, "status", sizearray(strPage) ))
-            {
-                web_module_status();
             }
             if ( compStr(strPage, "companion", sizearray(strPage) ))
             {
@@ -294,9 +543,10 @@ int main(void)
             }
             else
             {
-//                web_module_footer();
 		card_layout_footer();
             }
+
         }
     }
+return 0;
 }
