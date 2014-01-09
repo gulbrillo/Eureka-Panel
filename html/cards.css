@@ -28,6 +28,14 @@ height: 100%;
 color:#000;
 }
 
+.wait {
+cursor:wait !important;
+}
+
+.progress {
+cursor:progress !important;
+}
+
 #page {
 position:relative;
 min-height: 100%;
@@ -53,6 +61,36 @@ input::-ms-clear {
 .invisible {
 //display:none;
 visibility:hidden;
+}
+
+.hidden {
+display:none;
+}
+
+#logout {
+position: fixed;
+width:100%;
+bottom:0;
+z-index:200;
+text-align:center;
+}
+
+#logout a {
+border-left: 1px #DDD solid;
+border-right: 1px #DDD solid;
+margin:auto;
+display:inline-block;
+padding: 0px 20px;
+background-color: #FFC033;
+font-size:20px;
+height:40px;
+line-height:40px;
+text-decoration:none;
+color:#000;
+}
+
+#logout a:hover {
+background-color:#9C9C9C;
 }
 
 #ccname {font-size:52px; font-weight: 100;float:right;padding: 60px 25px 0px 0px;white-space:nowrap;}
@@ -87,6 +125,50 @@ height: 45px;
 vertical-align: baseline;
 margin-bottom: -5px;
 margin-right: 10px;}
+
+.ticks div {
+width: 286px;
+}
+
+.ticks div label {
+display:inline-block;
+margin-left:-20px;
+margin-right:-20px;
+padding-left:20px;
+padding-right:20px;
+width: 286px;
+font-size: 24px;
+font-weight: 100;
+padding-top: 7px;
+line-height: 36px;
+cursor:pointer;
+}
+
+.ticks div input[type='checkbox'] {
+visibility:hidden;
+position:absolute;
+}
+
+.ticks div label:after {
+position: absolute;
+right:0px;
+font-size: 24px;
+line-height: 36px;
+}
+
+.ticks div label:after {
+content: "\2718";
+color: #CCC;
+margin-right:3px;
+}
+
+.ticks div label.checked:after {
+content: "\2714";
+color: #FFC033;
+margin-right:0px;
+}
+
+
 .ctop .title {font-size:36px;font-weight: 100;}
 .cbot {position: absolute; bottom: 20px; left: 20px;}
 .table {display: table;}
@@ -96,8 +178,43 @@ margin-right: 10px;}
 #bottom {clear:both;height:40px;}
 .ccserial{float:left;padding: 12px 0px 0px 20px;font-size: 13px;}
 .topright{position:absolute;right:15px;top:15px;}
-img.corner{background-color:#DDD;}
-img.corner:hover{background-color:#FFC033;cursor: pointer;}
+
+
+    .ccserial{float:right;padding: 0;clear:both;padding-right:15px;padding-top:0px;}
+    .version{clear:both;padding:0;clear:both;padding-right:15px;padding-top:3px;}
+    #twitter-widget-1 {opacity:1;}
+   #logout {
+   text-align: left;
+   }
+   #logout a {
+   border-left: 0;
+   }
+
+
+img.corner
+{
+background-color: #DDD;
+}
+
+img.corner:hover{
+background-color:#FFC033;;
+cursor: pointer;
+}
+
+
+.front img.corner
+{
+background-color: #FFF;
+}
+
+.front:hover img.corner {
+background-color: #DDD;
+}
+
+.front img.corner:hover{
+background-color:#FFC033; !important;
+cursor: pointer;
+}
 
 #twitter .description {margin-left:-2px;margin-right:-2px;}
 
@@ -124,7 +241,7 @@ img.corner:hover{background-color:#FFC033;cursor: pointer;}
 
 
 
-#customDNSform .buttons div{
+#customDNSform .buttons div, #customPassform .buttons div{
 position:absolute;
 top:109px;
 height:53px;
@@ -136,22 +253,22 @@ font-weight:100;
 background-color:#FFF;
 }
 
-#customDNSform {
-padding-top:5px;
+#customDNSform, #Passcustom .inputtable {
+padding-top:4px;
 }
 
-#customDNSform .buttons div:hover {
+#customDNSform .buttons div:hover, #customPassform .buttons div:hover {
 background-color:#FFC033;
 }
 
-#CANCELcustomDNS {left:0px;
+#CANCELcustomDNS, #CANCELpass {left:0px;
 cursor: pointer;
 -moz-border-bottom-left-radius: 3px;
 -webkit-border-bottom-left-radius: 3px;
 border-bottom-left-radius: 3px; /* future proofing */
 -khtml-border-bottom-left-radius: 3px; /* for old Konqueror browsers */
 }
-#SENDcustomDNS {right:0px;
+#SENDcustomDNS, #SENDpass {right:0px;
 cursor: pointer;
 -moz-border-bottom-right-radius: 3px;
 -webkit-border-bottom-right-radius: 3px;
@@ -160,7 +277,9 @@ border-bottom-right-radius: 3px; /* future proofing */
 } 
 
 
-#DNScustom {
+#DNScustom, #Passcustom {
+
+z-index: 50;
 
     -webkit-transition: all .5s ease;
     -moz-transition: all .5s ease;
@@ -188,25 +307,29 @@ border-bottom-right-radius: 3px; /* future proofing */
 -khtml-border-bottom-right-radius: 3px; /* for old Konqueror browsers */
 }
 
-#DNScustom.show {
+#DNScustom.show, #Passcustom.show {
 height:162px;
 }
 
-#DNScustom input[type='text'] {
+#DNScustom input[type='text'], #Passcustom input[type='password'] {
 font-size:24px;
 font-family: 'Roboto', sans-serif; font-weight: 300;
 background-color:#DDD;
 border:none;
 border-bottom:1px solid #fff;
-margin-left:-5px;
 width:175px;
 } 
+
+#DNScustom input[type='text'] {
+margin-left:-5px;
+}
 
 #DNSselection > div, #DNSselection label {
 width:288px;
 }
 
-.DNSloading {
+
+.DNSloading, .Passloading, .actiontaken {
 padding-top:62px;
 position:absolute;
 bottom:0;
@@ -223,7 +346,17 @@ font-size: 24px;
 font-weight: 100;
 }
 
-.DNSname {
+.actiontaken {
+margin-bottom:0;
+z-index:10;
+}
+
+.actiontakenshrink {
+padding-top:0;
+height:0;
+}
+
+.DNSname, .changePass {
 margin-left:-20px;
 margin-right:-20px;
 font-size: 24px;
@@ -254,7 +387,7 @@ overflow-y: scroll;
 background-color:#fff;
 }
 
-#DNSselected {
+#DNSselected, #changePass {
 font-weight: 300;
 transition: all 1s ease .2s;
 overflow-y: hidden;
@@ -265,7 +398,7 @@ height:54px;
 margin-bottom:88px;
 }
 
-.DNSname label {
+.DNSname label, #changePass label {
 width: 306px;
 display:inline-block;
 cursor: pointer;
@@ -278,11 +411,11 @@ margin-top:-10px;
 margin-bottom:-10px;
 } 
 
-.DNSname label.checked {
+.DNSname label.checked, #changePass label {
 font-weight: 300;
 }
 
-.DNSname > div {
+.DNSname > div, #changePass div {
 height:33px;
 border-bottom: 1px solid white;
 background-color: #DDD;
@@ -293,7 +426,7 @@ cursor: pointer;
 width:306px;
 }
 
-.DNSname > div:hover {
+.DNSname > div:hover, #changePass div:hover {
 background-color: #FFC033;
 }
 
@@ -403,12 +536,12 @@ backface-visibility: hidden;
 transform: perspective(2000px) rotateY(0deg);
 }
 
-#dns.flip div.back, #status.flip div.back, #wifi.flip div.back {
+#security.flip div.back, #dns.flip div.back, #status.flip div.back, #wifi.flip div.back {
 -moz-transform: perspective(2000px) rotateY(0);
 -webkit-transform: perspective(2000px) rotateY(0);
 transform: perspective(2000px) rotateY(0);
 }
-#dns.flip div.front, #status.flip div.front, #wifi.flip div.front {
+#security.flip div.front, #dns.flip div.front, #status.flip div.front, #wifi.flip div.front {
 -webkit-transform: perspective(2000px) rotateY(-179.9deg);
 -moz-transform: perspective(2000px) rotateY(-179.9deg);
 transform: perspective(2000px) rotateY(-179.9deg);
@@ -509,7 +642,7 @@ transform: rotate(405deg);
 
 
 #eureka:hover #eurekawhite {
-transition: all .7s ease-in;
+transition: all .6s ease-in;
 
 transform: perspective(1000px) rotateY(180deg);
 -ms-transform: perspective(1000px) ;
@@ -547,15 +680,17 @@ transition: all .7s ease-in .5s;
 width:700px;
 }
 
-#twitter-widget-1 {
+#twitter-widget-1, #twitter-widget-0 {
 transition: all .2s ease-in;
 opacity:.33;
 }
 
-#twitter:hover #twitter-widget-1 {
+#twitter:hover #twitter-widget-1, #twitter:hover #twitter-widget-0 {
 transition: all .3s ease-out;
 opacity:1;
 }
+
+
 
 /* WELCOME */
 
@@ -588,7 +723,7 @@ overflow:hidden;
 
 #welcome.login {
 top:100%;
-transition: all .4s ease-out;
+transition: all .7s ease-out;
 }
 
 #welcome .content {
@@ -610,6 +745,10 @@ width:100%;
 }
 
 #welcome .box {
+-moz-box-shadow: 0px 0px 50px #FFF;
+-webkit-box-shadow: 0px 0px 50px #FFF;
+box-shadow: 0px 0px 50px #FFF;
+
 padding:40px;
 position: relative;
 width:470px;
@@ -621,6 +760,14 @@ background-color:#DDD;
 #welcome #welcome_login {
 position: relative;
 margin:auto;
+color:#484848;
+}
+
+#welcome #welcome_login #welcome_load {
+margin-top:40px;
+font-size:24px;
+text-align:center;
+font-weight:100;
 }
 
 #welcome #welcome_login #welcome_pass {
@@ -634,22 +781,28 @@ overflow:hidden;
 }
 
 #welcome #welcome_login #welcome_send {
+background-color:#9C9C9C;
+color:#fff;
 float:left;
-width: 110px;
+width: 130px;
 margin-top:40px;
 line-height: 42px;
 height:42px;
-background-color:#9C9C9C;
 font-size:24px;
 font-weight:100;
 overflow:hidden;
-color:#fff;
+cursor:default;
+}
+
+#welcome #welcome_login #welcome_send.clickable {
+background-color:#ffc033;
+color:#000;
 cursor:pointer;
 }
 
 #welcome #welcome_login #welcome_send:hover {
-background-color:#ffc033;
-color:#000;
+background-color:#9C9C9C;
+color:#fff;
 }
 
 #welcome #welcome_logo {
@@ -666,12 +819,15 @@ font-size:24px;
 font-family: 'Roboto', sans-serif; font-weight: 300;
 background-color:#FFF;
 border:none;
-width:318px;
+width:298px;
 padding:5px;
 padding-left:7px;
 margin:0;
 }
 
+#welcome #welcome_login input[type="password"].disabled {
+background-color:#EEE;
+}
 
 /* BEGIN CIRCLES */
 
@@ -956,12 +1112,10 @@ margin:0;
     }
     #top {height:130px;transition: all 1s ease;}
     #bottom {height:80px;}
-    .ccserial{float:right;padding: 0;clear:both;padding-right:15px;padding-top:0px;}
-    .version{clear:both;padding:0;clear:both;padding-right:15px;padding-top:3px;}
-    #twitter-widget-1 {opacity:1;}
+                      
     
-    
-   #bottom {
+   #XdontdothatXbottom {
+   display:none;
    position:relative;
    min-height:40px;
    height:auto;
@@ -969,7 +1123,7 @@ margin:0;
    overflow:hidden;
    padding: 10px 0;
    }
-    
+  
    #scrollable {
    margin-bottom:40px;
    } 
@@ -993,13 +1147,13 @@ margin:0;
    }
    
    #welcome #welcome_login  input[type='password'] {
-   width:178px;
+   width:163px;
    font-size:24px;
    }
-
+   
    #welcome #welcome_login #welcome_send {
    margin-top: 25px;
-   width:85px;
+   width:100px;
    font-size:20px;
    }
 
