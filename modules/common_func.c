@@ -15,6 +15,8 @@ char * userConfigValue = "/data/eureka/eureka.ini";
 FILE *ptr_file;
 char buf[1000];
 
+#define sizearray(a)  (sizeof(a) / sizeof((a)[0]))
+
 void urldecode2(char *dst, char *src)
 {
     char a, b;
@@ -78,8 +80,9 @@ long read_config_var(const char *r_Section, const char *r_Key, char *r_Buffer)
     //get variable from userConfig
     ini_gets(r_Section, r_Key, "undefined", r_Buffer, 300, userConfigValue);
 
+
     //check if userConfig returned undefined, if so use systemConfig
-    if(compStr("undefined", r_Buffer))
+      if(compStr(r_Buffer, "undefined", sizearray(r_Buffer)))
     {
         ini_gets(r_Section, r_Key, "undefined", r_Buffer, 300, systemConfigValue);
     }
