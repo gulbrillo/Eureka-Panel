@@ -5,6 +5,7 @@ This module presents basic network information to the user
 int card_dns(void)
 {
 
+
 printf("<div id=\"dns\" class=\"flipcard\">");
 
 // front
@@ -30,6 +31,5 @@ printf("</div>");
             card_dns_back();
 
 printf("</div>");
-
 
 }

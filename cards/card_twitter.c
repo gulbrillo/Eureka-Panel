@@ -5,6 +5,8 @@ This module presents basic network information to the user
 
 int card_twitter(void)
 {
+
+
     printf("\n<div class=\"card\" id=\"twitter\">");
 
     printf("\n<div class=\"topright\">");

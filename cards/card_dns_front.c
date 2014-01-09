@@ -134,12 +134,12 @@ fclose(ptr_file);
 
     printf("\n<div class=\"row\">");
     printf("\n<div>Primary</div>");
-    printf("\n<div><input value=\"%s\" type=\"text\" class=\"dnsinput\" name=\"DNS/Primary\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", dns1);
+    printf("\n<div><input value=\"%s\" type=\"text\" class=\"dnsinput\" name=\"DNS/Primary\" id=\"dns1field\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", dns1);
     printf("\n</div>");
 
     printf("\n<div class=\"row\">");
     printf("\n<div>Secondary</div>");
-    printf("\n<div><input value=\"%s\" type=\"text\" class=\"dnsinput\" name=\"DNS/Secondary\" autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", dns2);
+    printf("\n<div><input value=\"%s\" type=\"text\" class=\"dnsinput\" name=\"DNS/Secondary\"  id=\"dns2field\"  autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", dns2);
     printf("\n</div>");
 
     printf("\n</div>");

@@ -8,8 +8,8 @@ int card_layout_header(void)
     FILE *ptr_file;
     char buf[1000];
 
-    printf( "HTTP/1.1 200 OK\n" );
-    printf( "Content-Type: text/html; charset=UTF-8\n\n" );
+//    printf( "HTTP/1.1 200 OK\n" );
+//    printf( "Content-Type: text/html; charset=UTF-8\n\n" );
 
 // HTML STARTS HERE (header)
 
@@ -28,39 +28,14 @@ printf("\n  <link href=\"cards.css\" media=\"screen\" rel=\"stylesheet\" type=\"
 printf("\n<script type='text/javascript' src='js/jquery.scrollTo-min.js'></script>");
 printf("\n<script type='text/javascript' src='js/ajax.js'></script>");
 
-printf("\n<script>");
-printf("\n(function($)");
-printf("\n{");
-printf("\n    $(document).ready(function()");
-printf("\n    {");
-printf("\n        var $container = $(\"#wifi_update\");");
-printf("\n        var refreshId = setInterval(function()");
-printf("\n        {");
-printf("\n            $container.load('?page=wifi_front&footers=0&headers=0');");
-printf("\n        }, 2500);");
-printf("\n    });");
-printf("\n})(jQuery);");
-printf("\n</script>");
-
-printf("\n<script>");
-printf("\n(function($)");
-printf("\n{");
-printf("\n    $(document).ready(function()");
-printf("\n    {");
-printf("\n        var $container = $(\"#status_update\");");
-printf("\n        var refreshId = setInterval(function()");
-printf("\n        {");
-printf("\n            $container.load('?page=status_front&footers=0&headers=0');");
-printf("\n        }, 15000);");
-printf("\n    });");
-printf("\n})(jQuery);");
-printf("\n</script>");
-
 printf("\n</head>");
 printf("\n");
 printf("\n<body>");
 printf("\n<div id=\"page\">");
 printf("\n<div id=\"shade\"></div>");
+
+
+
 printf("\n<div id=\"top\">");
 
 
@@ -87,6 +62,14 @@ printf("\n</div>");
 
 printf("\n</div>");
 
+char protected[1024];
+read_config_var("Security", "webprotected", protected);
+
+if (compStr(protected, "true", 1024)) {
+	printf("\n  <div id=\"logout\" class=\"hidden\"><a href=\"?page=logout\">Log out</a></div>");
+	} else {
+	printf("\n  <div id=\"logout\" class=\"hidden invisible\"><a href=\"?page=logout\">Log out</a></div>");
+	}
 
 printf("\n  <div id=\"ccname\"><div class=\"inner\">");
 

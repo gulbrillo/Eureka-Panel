@@ -11,7 +11,45 @@ int card_layout_footer()
 // HTML STARTS HERE (footer)
 
 printf("\n</div>");
+
+printf("\n<div class=\"clearspace\"></div>");
+
 printf("\n");
+
+
+
+printf("\n<div id=\"welcome\">");
+
+printf("\n<div class=\"content\">");
+
+printf("\n<div class=\"centerme\">");
+
+printf("\n<div class=\"centerme_backtrack\">");
+
+printf("\n<div class=\"box\">");
+
+	printf("\n<div id=\"welcome_logo\">");
+	printf("\n</div>");
+
+	printf("\n<form id=\"PanelLogin\" method=\"post\"><input name=\"action\" type=\"hidden\" value=\"login\"/>");
+        printf("\n<div id=\"welcome_login\">");
+	printf("\n<div id=\"welcome_pass\"><input id=\"welcome_password\" name=\"welcome_password\" type=\"password\" /></div>");
+	printf("\n<div id=\"welcome_send\" class=\"clickable\">Log in</div>");
+	printf("\n</form>");
+        printf("\n</div>");
+
+printf("\n</div>");
+
+printf("\n</div>");
+
+printf("\n</div>");
+
+printf("\n</div>");
+
+printf("\n</div>");
+printf("\n");
+
+
 printf("\n<div id=\"bottom\">");
 
 printf("\n  <div class=\"ccserial\">");

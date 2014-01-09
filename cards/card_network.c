@@ -6,6 +6,8 @@ This module presents basic network information to the user
 
 int card_network(void)
 {
+
+
     FILE *ptr_file;
     char buf[1000];
     char path[1035];
@@ -54,7 +56,7 @@ int card_network(void)
 
 
     printf("\n<div class=\"row\">");
-    printf("\n<div>Subnet</div>");
+    printf("\n<div>Mask</div>");
 
 //SUBNET
     ptr_file=popen("busybox ifconfig | busybox grep -e \"inet:\" -e \"addr:\" | busybox grep -v \"inet6\" | busybox grep -v \"127.0.0.1\" | busybox head -n 1 | busybox awk '{print $4}' | busybox cut -c6-","r");
