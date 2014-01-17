@@ -13,7 +13,7 @@ printf("<div id=\"dns\" class=\"flipcard\">");
   printf("\n<div id=\"dns_front\" class=\"card front\">");
 
     printf("\n<div class=\"topright\">");
-    printf("\n<img src=\"images/i.svg\" onclick=\"document.querySelector('#dns').classList.toggle('flip');\" class=\"corner\"></img>");
+    printf("\n<i onclick=\"document.querySelector('#dns').classList.toggle('flip');\" class=\"corner icon-info\"></i>");
     printf("\n</div>");
 
     printf("\n<div class=\"ctop\">");

@@ -8,7 +8,7 @@ int card_dns_back(void)
     printf("\n<div id=\"dns_back\" class=\"card back\">");
 
     printf("\n<div class=\"topright\">");
-    printf("\n<img src=\"images/x.svg\" onclick=\"document.querySelector('#dns').classList.toggle('flip');\" class=\"corner\">");
+    printf("\n<i onclick=\"document.querySelector('#dns').classList.toggle('flip');\" class=\"corner icon-close\"></i>");
     printf("\n</div>");
 
     printf("\n<div class=\"ctop\">");

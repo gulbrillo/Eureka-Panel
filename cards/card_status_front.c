@@ -29,7 +29,7 @@ int card_status_front(void)
     int cpuusage2 = 0;
 
     printf("\n<div class=\"topright\">");
-    printf("\n<img src=\"images/i.svg\" onclick=\"document.querySelector('#status').classList.toggle('flip');\" class=\"corner\"></img>");
+    printf("\n<i  onclick=\"document.querySelector('#status').classList.toggle('flip');\" class=\"corner icon-info\"></i>");
     printf("\n</div>");
 
     printf("\n<div class=\"ctop\">");

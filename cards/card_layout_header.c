@@ -19,19 +19,25 @@ printf("\n  <head>");
 printf("\n  <meta charset=\"utf-8\">");
 printf("\n  <meta name=\"viewport\" content=\"initial-scale=1.0, maximum-scale=1.0, user-scaleable=no, width=device-width\" />");
 printf("\n  <title>Chromecast Configuration Panel - Eureka Rom</title>");
-printf("\n  <link href='http://fonts.googleapis.com/css?family=Roboto:300,100' rel='stylesheet' type='text/css'>");
+//printf("\n  <link href='http://fonts.googleapis.com/css?family=Roboto:300,100' rel='stylesheet' type='text/css'>");
 printf("\n  <link href=\"cards.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\">");
 
- printf("\n<script src=\"http://code.jquery.com/jquery-latest.js\"></script>");
+//printf("\n<script src=\"http://code.jquery.com/jquery-latest.js\"></script>");
 
-//printf("\n<script type='text/javascript' src='js/jquery-1.8.3.min.js'></script>");
+printf("\n<script type='text/javascript' src='js/jquery-1.10.2.min.js'></script>");
 printf("\n<script type='text/javascript' src='js/jquery.scrollTo-min.js'></script>");
 printf("\n<script type='text/javascript' src='js/ajax.js'></script>");
 
 printf("\n</head>");
 printf("\n");
-printf("\n<body>");
-printf("\n<div id=\"page\">");
+
+
+char currenttheme[1024];
+read_config_var("Webpanel", "theme", currenttheme);
+
+
+printf("\n<body class=\"%s\">", currenttheme);
+printf("\n<div id=\"page\" class=\"page1\">");
 printf("\n<div id=\"shade\"></div>");
 
 
@@ -62,15 +68,6 @@ printf("\n</div>");
 
 printf("\n</div>");
 
-char protected[1024];
-read_config_var("Security", "webprotected", protected);
-
-if (compStr(protected, "true", 1024)) {
-	printf("\n  <div id=\"logout\" class=\"hidden\"><a href=\"?page=logout\">Log out</a></div>");
-	} else {
-	printf("\n  <div id=\"logout\" class=\"hidden invisible\"><a href=\"?page=logout\">Log out</a></div>");
-	}
-
 printf("\n  <div id=\"ccname\"><div class=\"inner\">");
 
 printf("<span class=\"castlogo\"><img src=\"images/cast.svg\" class=\"castlogo\"></span>");
@@ -88,6 +85,6 @@ printf( "%s", buf );
 printf("\n  </div></div>");
 printf("\n</div>");
 printf("\n");
-printf("\n<div id=\"cards\">");
+printf("\n<div id=\"slides\">");
 
 }

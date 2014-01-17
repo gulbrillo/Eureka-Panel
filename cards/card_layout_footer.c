@@ -10,13 +10,10 @@ int card_layout_footer()
 
 // HTML STARTS HERE (footer)
 
-printf("\n</div>");
-
-printf("\n<div class=\"clearspace\"></div>");
 
 printf("\n");
 
-
+printf("\n</div>");
 
 printf("\n<div id=\"welcome\">");
 
@@ -52,7 +49,28 @@ printf("\n");
 
 printf("\n<div id=\"bottom\">");
 
-printf("\n  <div class=\"ccserial\">");
+char protected[1024];
+read_config_var("Security", "webprotected", protected);
+
+if (compStr(protected, "true", 1024)) {
+        printf("\n  <div id=\"logout\" class=\"hidden\"><a href=\"?logout\">Log out</a></div>");
+	printf("<div id=\"settings\" class=\"logout hidden\"><div id=\"cog\"><i class=\"icon-cog\"></i><div class=\"menu\">");
+        } else {
+        printf("\n  <div id=\"logout\" class=\"hidden invisible\"><a href=\"?page=logout\">Log out</a></div>");
+	printf("<div id=\"settings\" class=\"hidden\"><div id=\"cog\"><i class=\"icon-cog\"></i><div class=\"menu\">");
+        }
+
+
+printf("<ul><li id=\"settings_theme\">");
+
+settings_theme();
+
+printf("</li><li><ul><form id=\"elements\">");
+printf("<li><label class=\"checked\">Network</label></li><li><label class=\"checked\">Status</label></li><li><label class=\"checked\">DNS</label></li><li><label class=\"checked\">WiFi</label></li><li><label class=\"checked\">Security</label></li><li><label class=\"checked\">Services</label></li><li><label class=\"checked\">News</label></li></form></ul>Elements</li></ul>");
+
+printf("</div></div></div>");
+
+printf("\n<div id=\"credit\"><div class=\"ccserial\">");
 
 // PRINT SERIAL NO
     ptr_file=popen("cat /factory/serial.txt | busybox tr '\n' ' '","r");
@@ -68,7 +86,8 @@ printf("\n  <div class=\"version\">");
 printf("Powered by Team-Eureka Panel v2.0");
 printf("\n  </div>");
 
-printf("\n</div>");
+
+printf("\n</div></div>");
 printf("\n");
 
 

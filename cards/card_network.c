@@ -12,7 +12,7 @@ int card_network(void)
     char buf[1000];
     char path[1035];
 
-    printf("\n<div class=\"card\">");
+    printf("\n<div id=\"network\" class=\"flipcard\"><div class=\"card\">");
 
     printf("\n<div class=\"ctop\">");
     
@@ -21,7 +21,9 @@ int card_network(void)
 
 
 //INTERNET STATUS
-    ptr_file = popen("busybox ping -c 1 -w 2 google.com > /dev/null ; echo $?", "r");
+
+//Don't use domain name here, since DNSresolution does not count in the time out - 4.2.2.2 is level 3's public DNS
+    ptr_file = popen("busybox ping -c 1 -w 3 4.2.2.2 > /dev/null ; echo $?", "r");
     while (fgets(path, sizeof(path)-1, ptr_file) != NULL)
     {
         if (compStr(path, "0\n", sizearray(path) ))
@@ -84,6 +86,6 @@ int card_network(void)
 
     printf("\n</div>");
 
-    printf("\n</div>");
+    printf("\n</div></div>");
 
 }

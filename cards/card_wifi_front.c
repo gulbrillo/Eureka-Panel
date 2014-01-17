@@ -21,7 +21,7 @@ int card_wifi_front(void)
     int link = 5;
 
     printf("\n<div class=\"topright\">");
-    printf("\n<img src=\"images/i.svg\" onclick=\"document.querySelector('#wifi').classList.toggle('flip');\" class=\"corner\"></img>");
+    printf("\n<i onclick=\"document.querySelector('#wifi').classList.toggle('flip');\" class=\"corner icon-info\"></i>");
     printf("\n</div>");
 
     printf("\n<div class=\"ctop\">");
