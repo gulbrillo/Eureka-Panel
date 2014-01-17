@@ -19,8 +19,12 @@
 #include "modules/web_module_companion.c"
 #include "modules/web_module_popup_headers.c"
 
+#include "cards/card_slides.c"
 #include "cards/card_layout_header.c"
 #include "cards/card_layout_footer.c"
+#include "cards/card_layout_settings.c"
+#include "cards/card_layout_httpkill.c"
+#include "cards/card_links.c"
 #include "cards/card_network.c"
 #include "cards/card_wifi.c"
 #include "cards/card_wifi_front.c"
@@ -29,12 +33,23 @@
 #include "cards/card_status.c"
 #include "cards/card_status_front.c"
 #include "cards/card_status_back.c"
+#include "cards/card_playing.c"
+#include "cards/card_playing_front.c"
+#include "cards/card_playing_back.c"
 #include "cards/card_dns.c"
 #include "cards/card_dns_front.c"
 #include "cards/card_dns_back.c"
 #include "cards/card_security.c"
 #include "cards/card_security_front.c"
 #include "cards/card_security_back.c"
+#include "cards/card_services.c"
+#include "cards/card_services_front.c"
+#include "cards/card_services_back.c"
+#include "cards/card_team_rom.c"
+#include "cards/card_team_chris.c"
+#include "cards/card_team_thomas.c"
+#include "cards/card_team_trevor.c"
+#include "cards/card_team_simon.c"
 
 
 #define sizearray(a)  (sizeof(a) / sizeof((a)[0]))
@@ -61,7 +76,7 @@ if (compStr(protected, "undefined", 1024) || !compStr(protected, "true", 1024) |
 
 
 		if (cgiCookieString("session", cookie, sizeof(cookie)) == cgiFormSuccess) {
-		if (compStr(session, cookie, 1024) && !compStr(session, "undefined", 1024))
+		if (compStr(session, cookie, 1024) && !compStr(session, "undefined", 1024) && !compStr(session, "", 1024))
 			{return 1;}
 		else
 			{return 0;}
@@ -76,7 +91,6 @@ void CookieSet()
 {
   char *cname = "session";
   char *cvalue;
-  char *path="/";
 
   int r;
 
@@ -112,7 +126,6 @@ int processLogin()
 {
 
     char value[80];
-    int n;
     FILE *ptr_file;
     char command[200];
     char buf[1024];
@@ -184,10 +197,7 @@ void writenewPass()
 int processPostData()
 {
 
-    char *token;
     char buf[1024];
-    char decodedToken[100];
-    char action[80];
     char section[80];
     char field[80];
     char value[80];
@@ -198,7 +208,6 @@ int processPostData()
 
     char **array, **arrayStep;
 
-    char fieldvalue[100];
     cgiFormStringNoNewlines("action", value, 80);
 
 //  sscanf(postData, "action=%[0-9a-zA-Z]", &action);
@@ -266,25 +275,15 @@ int processPostData()
 int cgiMain()
 {
 
-    long n;
     char strPage[1023];
     char strFooters[1023];
     char strHeaders[1023];
     char strPopup[1023];
-    char str[1024];
     char command[1024] = "echo Welcome to EurekaRom";
     char decodedCommand[1024];
     char *data;
     char *token;
-    char *headers;
-    char *page = NULL;
     const char *key, *value;
-    unsigned int postLen;
-    char * queryString;
-    char query_action[1024];
-    char query_section[1024];
-    char query_field[1024];
-    char query_value[1024];
 
     data = malloc(QS_LEN);
     token = malloc(QS_LEN);
@@ -316,10 +315,8 @@ int cgiMain()
 	if( CookieCheck() ) {
 //            sscanf(postData, "page=debug&command=%[^,]", command);
 //            urldecode2(decodedCommand, command);
-//            web_module_headers(strPage);
 	    card_layout_header();
             web_module_debug(decodedCommand);
-//            web_module_footer();
 	    card_layout_footer();
 	}
         }
@@ -335,6 +332,60 @@ int cgiMain()
 		card_dns_front();
 	}
         }
+	else if ( compStr(strPage, "theme", sizearray(strPage)) )
+        {
+                cgiHeaderContentType("text/html");
+        if( CookieCheck() ) {
+                processPostData();
+                settings_theme();
+        }
+        }
+        else if ( compStr(strPage, "services", sizearray(strPage)) )
+        {
+
+	cgiHeaderContentType("text/html");
+
+        if( CookieCheck() ) {
+//                processPostData(); TOO DANGEROUS (you may switch everything off by accident)
+//				     let's do it one by one and activate the service if there is no value given
+//                                   also removed the action update input field
+
+	char httpvalue[20];
+	char sshvalue[20];
+	char adbvalue[20];
+	char telnetvalue[20];
+
+        cgiFormStringNoNewlines("Services/telnet", telnetvalue, 20);
+        if(compStr(telnetvalue, "disabled", 20)) {
+                write_config_var("Services", "telnet", "0");
+        } else {write_config_var("Services", "telnet", "1");}
+
+        cgiFormStringNoNewlines("Services/adb", adbvalue, 20);
+        if(compStr(adbvalue, "disabled", 20)) {
+                write_config_var("Services", "adb", "0");
+        } else {write_config_var("Services", "adb", "1");}
+
+        cgiFormStringNoNewlines("Services/ssh", sshvalue, 20);
+        if(compStr(sshvalue, "disabled", 20)) {
+                write_config_var("Services", "ssh", "0");
+        } else {write_config_var("Services", "ssh", "1");}
+
+
+        cgiFormStringNoNewlines("Services/http", httpvalue, 20);
+        if(compStr(httpvalue, "disabled", 20)) {
+                write_config_var("Services", "http", "0");
+
+
+		printf("ikilledhttp");
+		exit(0);
+
+        } else {write_config_var("Services", "http", "1");}
+
+                card_services_front();
+
+	}
+        
+        }
         else if ( compStr(strPage, "newpass", sizearray(strPage)) )
         {
         if( CookieCheck() ) {
@@ -346,6 +397,13 @@ int cgiMain()
     cgiFormStringNoNewlines("newpass2", newpass2, 80);
 	    if(compStr(newpass1, newpass2, 80) && newpass1[0] != '\0')
 		{
+
+	char protected[80];
+	cgiFormStringNoNewlines("Security/webprotected", protected, 80);
+
+
+	        if (compStr(protected, "true", 80)) 
+		{
 			CookieSet();
 
 printf("\n<script>");
@@ -353,11 +411,12 @@ printf("\n(function($)");
 printf("\n{");
 printf("\n    $(document).ready(function()");
 printf("\n    {");
-printf("\n        $('#logout').removeClass(\"invisible\")");
+printf("\n        $('#logout').removeClass(\"invisible\");$('#settings').addClass(\"logout\");");
 printf("\n    });");
 printf("\n})(jQuery);");
 printf("\n</script>");
 
+}
 
 			printf("<div class=\"actiontaken\">Password updated</div>");
 			
@@ -393,17 +452,28 @@ printf("\n</script>");
 		}
 	        	
         }
-        else if (compStr(strPage, "verify", sizearray(strPage) ))
-        {
-                if( CookieCheck() ) {
-                        cgiHeaderContentType("text/html");
-                        printf("Correct");
-                } else {
-                        cgiHeaderContentType("text/html");
-                        printf("Wrong");
-                }
+	else if (compStr(strPage, "killhttp", sizearray(strPage) ))
+	{
+    char value[80];
 
-        }
+    if( CookieCheck() ) {
+    cgiFormStringNoNewlines("action", value, 80);
+    if(compStr(value, "killhttp", sizearray(value)))
+    {
+	cgiHeaderContentType("text/html");
+	printf("I got killed");
+	
+                // restart with: lighttpd -f /system/etc/httpd.conf -m /system/usr/lib/
+                FILE *ptr_file;
+                ptr_file=popen("busybox killall lighttpd","r");
+                pclose(ptr_file);
+
+
+	exit(0);
+    }
+    }
+
+	}
 	else
 	{
 		cgiHeaderContentType("text/html");
@@ -416,9 +486,6 @@ printf("\n</script>");
     else
     {
 
-    //WITHOUT POST THERE IS NO LOGIN, SO PRINT HEADERS. But: this, if possible, should be all done with ajax and POST.
-    cgiHeaderContentType("text/html");
-
         if (!getenv("QUERY_STRING"))
         {
             //no query string
@@ -427,6 +494,50 @@ printf("\n</script>");
         }
         if (getenv("QUERY_STRING"))
         {
+
+//LOGOUT and redirect back to start
+	if ( compStr(getenv("QUERY_STRING"), "logout", 1024 ))
+            {
+
+		  char *cname = "session";
+		  char *cvalue = "";
+
+
+		//only log out (kill session) if you own the session
+                if( CookieCheck() ){write_config_var("Security", "session", "undefined");}
+
+//		cgiHeaderCookieSetString(cname, cvalue, 0, path, cgiServerName);
+
+//      printf("Content-type: text/html\n");
+
+	printf("Set-Cookie: %s=%s; Path=/; Domain=%s; HttpOnly\n", cname, cvalue, cgiServerName);
+	printf("Location: /test/\n\n");
+
+
+//		cgiHeaderLocation(location);
+		exit(0);
+            }
+
+	else if ( compStr(getenv("QUERY_STRING"), "ikilledhttp", 1024 ))
+            {
+		if( CookieCheck() ){
+
+		cgiHeaderContentType("text/html");
+		card_httpkill();
+
+//		need to do that with a java redirect, else it's killed before shoing the confirmation
+//                ptr_file=popen("busybox killall lighttpd","r");
+//                pclose(ptr_file);
+
+		exit(0);
+		}
+	    }
+
+
+//WITHOUT POST THERE IS NO LOGIN, SO PRINT HEADERS. But: this, if possible, should be all done with ajax and POST.
+    cgiHeaderContentType("text/html");
+
+
             //parse Query_STRING for page
             //query string present
             token = strtok (getenv("QUERY_STRING"),"&");
@@ -451,11 +562,23 @@ printf("\n</script>");
                 }
                 token = strtok (NULL, "&");
             }
+
+
+        if ( compStr(strPage, "verify", sizearray(strPage) ))
+        {
+                if( CookieCheck() ) {
+                        printf("Correct");
+                        exit(0);
+                } else {
+                        printf("Wrong");
+                        exit(0);
+                }
+
+        }
+
+
+
             // Call this before headers
-	    if ( compStr(strPage, "logout", sizearray(strPage) ))
-	    {
-		write_config_var("Security", "session", "");
-            }
             if ( compStr(strPage, "dumpstate", sizearray(strPage) ))
             {
                 dumpstate();
@@ -476,28 +599,24 @@ printf("\n</script>");
             }
 
 
-// for auto update
+
+// for auto update (ajax)
 if( CookieCheck() ) {
             if ( compStr(strPage, "wifi_front", sizearray(strPage) ))
             {
                 card_wifi_front();
             }
-            if ( compStr(strPage, "status_front", sizearray(strPage) ))
+            else if ( compStr(strPage, "status_front", sizearray(strPage) ))
             {
                 card_status_front();
             }
-	    if ( compStr(strPage, "dns_front", sizearray(strPage) ))
+            else if ( compStr(strPage, "playing_front", sizearray(strPage) ))
             {
-                card_dns_front();
+                card_playing_front();
             }
-            if ( compStr(strPage, "cards", sizearray(strPage) ))
+            else if ( compStr(strPage, "cards", sizearray(strPage) ))
             {
-               card_twitter();
-               card_network();
-               card_status();
-               card_dns();
-               card_wifi();
-	       card_security();
+	       card_slides();
             }
 } else {
 
