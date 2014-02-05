@@ -59,17 +59,17 @@ webpaneltick = " ";
 sshtick = " ";
 
 read_config_var("Security", "webprotected", securewebpanel);
-	if (compStr(securewebpanel, "true", 1024)) {webpaneltick = "checked";} else {webpaneltick = " ";}
+	if (compStr(securewebpanel, "1", 1024)) {webpaneltick = "checked";} else {webpaneltick = " ";}
 read_config_var("Security", "sshprotected", securessh);
-	if (compStr(securessh, "true", 1024)) {sshtick = "checked";} else {sshtick = " ";}
+	if (compStr(securessh, "1", 1024)) {sshtick = "checked";} else {sshtick = " ";}
 read_config_var("Security", "pass", passhash);
 	if (compStr(passhash, "undefined", 1024)) {sshtickid = "makepassfirst"; webpaneltickid = "makepassfirst";} else {sshtickid = "tickssh"; webpaneltickid = "tickwebpanel";}
 
 printf("\n<div id=\"secureOptionsform\"><div class=\"ticks\" id=\"secureOptions\">");
 
-    printf("\n<div><label id=\"labeltickssh\" class=\"%s\"><input %s type=\"checkbox\" name=\"Security/sshprotected\" value=\"true\" id=\"%s\">Protect SSH</label></div>", sshtick, sshtick, sshtickid);
+    printf("\n<div><label id=\"labeltickssh\" class=\"%s\"><input %s type=\"checkbox\" name=\"Security/sshprotected\" value=\"1\" id=\"%s\">Protect SSH</label></div>", sshtick, sshtick, sshtickid);
 
-    printf("\n<div><label id=\"labeltickwebpanel\" class=\"%s\"><input %s type=\"checkbox\" name=\"Security/webprotected\" value=\"true\" id=\"%s\">Protect web panel</label></div>", webpaneltick, webpaneltick, webpaneltickid);
+    printf("\n<div><label id=\"labeltickwebpanel\" class=\"%s\"><input %s type=\"checkbox\" name=\"Security/webprotected\" value=\"1\" id=\"%s\">Protect web panel</label></div>", webpaneltick, webpaneltick, webpaneltickid);
 
 printf("\n</div></div>");
 

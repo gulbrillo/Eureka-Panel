@@ -51,5 +51,6 @@ printf("<div class=\"cbot\">");
 
 printf("</div>");
 
+return 1;
 
 }

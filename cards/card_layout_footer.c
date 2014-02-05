@@ -52,7 +52,7 @@ printf("\n<div id=\"bottom\">");
 char protected[1024];
 read_config_var("Security", "webprotected", protected);
 
-if (compStr(protected, "true", 1024)) {
+if (compStr(protected, "1", 1024)) {
         printf("\n  <div id=\"logout\" class=\"hidden\"><a href=\"?logout\">Log out</a></div>");
 	printf("<div id=\"settings\" class=\"logout hidden\"><div id=\"cog\"><i class=\"icon-cog\"></i><div class=\"menu\">");
         } else {

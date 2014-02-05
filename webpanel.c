@@ -25,6 +25,11 @@
 #include "cards/card_layout_settings.c"
 #include "cards/card_layout_httpkill.c"
 #include "cards/card_links.c"
+#include "cards/card_links_big.c"
+#include "cards/card_link_status.c"
+#include "cards/card_link_settings.c"
+#include "cards/card_link_team.c"
+#include "cards/card_link_debug.c"
 #include "cards/card_network.c"
 #include "cards/card_wifi.c"
 #include "cards/card_wifi_front.c"
@@ -50,6 +55,9 @@
 #include "cards/card_team_thomas.c"
 #include "cards/card_team_trevor.c"
 #include "cards/card_team_simon.c"
+#include "cards/card_whitelist.c"
+#include "cards/card_whitelist_front.c"
+#include "cards/card_whitelist_back.c"
 
 
 #define sizearray(a)  (sizeof(a) / sizeof((a)[0]))
@@ -69,7 +77,7 @@ char cookie[1024];
 read_config_var("Security", "webprotected", protected);
 read_config_var("Security", "pass", password);
 
-if (compStr(protected, "undefined", 1024) || !compStr(protected, "true", 1024) || compStr(password, "undefined", 1024)) {
+if (compStr(protected, "undefined", 1024) || !compStr(protected, "1", 1024) || compStr(password, "undefined", 1024)) {
 	return 1;	
 	} else {
 		read_config_var("Security", "session", session);
@@ -402,7 +410,7 @@ int cgiMain()
 	cgiFormStringNoNewlines("Security/webprotected", protected, 80);
 
 
-	        if (compStr(protected, "true", 80)) 
+	        if (compStr(protected, "1", 80)) 
 		{
 			CookieSet();
 
