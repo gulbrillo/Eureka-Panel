@@ -1,17 +1,67 @@
+//NAVMENU
+
+$(window).scroll(function(event) {
+        var y = $(this).scrollTop();
+        var top = $('#top').offset().top;
+        if (y >= top) {
+            $('#navigation').addClass('fixed');
+            $('#ccname').addClass('fixed');
+        } else {
+            $('#navigation').removeClass('fixed');
+            $('#ccname').removeClass('fixed');
+        }
+    });
+
 //PAGES
 
 //Page2 (Team Eureka)
 
 $(document).on('click', '#teameurekalink', function() {
+//var top = $('#top').offset().top;
+//$.scrollTo( {top:top, left:0}  );
 $.scrollTo( {top:0, left:0}  );
 $('#page').attr("class","page2");
-$('#eureka').addClass("back");
+$('#webpanel').addClass("back");
 });
 
-$(document).on('click', '#eureka', function() {
+//Page3 (Status)
+
+$(document).on('click', '#statuslink', function() {
+//var top = $('#top').offset().top;
+//$.scrollTo( {top:top, left:0}  );
 $.scrollTo( {top:0, left:0}  );
+$('#page').attr("class","page3");
+$('#webpanel').addClass("back");
+});
+
+//Page4 (Settings)
+
+$(document).on('click', '#settingslink', function() {
+//var top = $('#top').offset().top;
+//$.scrollTo( {top:top, left:0}  );
+$.scrollTo( {top:0, left:0}  );
+$('#page').attr("class","page4");
+$('#webpanel').addClass("back");
+});
+
+//Page5 (Debug)
+
+$(document).on('click', '#debuglink', function() {
+//var top = $('#top').offset().top;
+//$.scrollTo( {top:top, left:0}  );
+$.scrollTo( {top:0, left:0}  );
+$('#page').attr("class","page5");
+$('#webpanel').addClass("back");
+});
+
+
+$(document).on('click', '#webpanel', function() {
+//var top = $('#top').offset().top;
+//$.scrollTo( {top:top, left:0}  );
+$.scrollTo( {top:0, left:0}  );
+//$.scrollTo($('#navigation'));
 $('#page').attr("class","page1");
-$('#eureka').removeClass("back");
+$('#webpanel').removeClass("back");
 });
 
 
@@ -23,13 +73,21 @@ $(document).on('keydown','html',function(e) {
 
         if (e.which == 37)
         {
-	    if ($('#page').is('.page2'))
-		{$('#page').attr("class","page1"); $('#eureka').removeClass("back");}
+	    if ($('#page').is('.page2') || $('#page').is('.page3') || $('#page').is('.page4') || $('#page').is('.page5'))
+		{$('#page').attr("class","page1"); $('#webpanel').removeClass("back");}
         }
         if (e.which == 39)
         {
             if ($('#page').is('.page1'))
-                {$('#page').attr("class","page2"); $('#eureka').addClass("back");}
+                {$('#page').attr("class","page3"); $('#webpanel').addClass("back");}
+            else if ($('#page').is('.page3'))
+                {$('#page').attr("class","page4"); $('#webpanel').addClass("back");}
+            else if ($('#page').is('.page4'))
+                {$('#page').attr("class","page2"); $('#webpanel').addClass("back");}
+            else if ($('#page').is('.page2'))
+                {$('#page').attr("class","page5"); $('#webpanel').addClass("back");}
+            else if ($('#page').is('.page5'))
+                {$('#page').attr("class","page3"); $('#webpanel').addClass("back");}
         }
 
 });
@@ -41,7 +99,7 @@ $(document).on('keydown','html',function(e) {
 //Themes
 
 
-//open DNS drawer
+//open Themes drawer
 $(document).on('click', '#themesForm input:radio', function(e) {
 
 
@@ -291,6 +349,31 @@ $(document).on('keypress','#welcome_pass #welcome_password',function(e) {
 
 });
 
+//WHITELIST SETTINGS
+
+//close Whitelist drawers anywhere outside of div #whitelist_update
+$(document).on('focus click', 'body', function(e) {
+    var target = $(e.target);
+    var id = e.target.id;
+
+    if (!target.parents('div#whitelist_update').length || id == 'CANCELcustomWHITE') {
+        $('#WHITEselection').addClass("invisible");
+        $('#WHITEcustom').removeClass("show");
+    }
+});
+
+
+
+//open Whitelist drawer
+$(document).on('click', '#WHITEselected label', function() {
+
+        $('#WHITEselection').removeClass("invisible");
+});
+
+
+
+
+//DNS SETTINGS
 
 //close DNS drawers anywhere outside of div #dns_update
 $(document).on('focus click', 'body', function(e) {
@@ -312,7 +395,6 @@ $(document).on('click', '#DNSselected label', function() {
 });
 
 
-//CUSTOM DNS
 
 function submitDNS(){
 
@@ -412,8 +494,8 @@ $(document).on('click', '#secureOptions #makepassfirst', function() {
 
 function changeSecOptions(){
 
-var webpanel = "false";
-var ssh = "false";
+var webpanel = "0";
+var ssh = "0";
 
 
 if ($("#tickwebpanel").is(':checked'))
@@ -656,5 +738,4 @@ $(document).on('click', '#DNSselection input:radio', function() {
 		}
 
 });
-
 
