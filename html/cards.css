@@ -1224,6 +1224,7 @@ backface-visibility: hidden;
 -moz-transform: perspective(2000px) rotateY(180deg);
 -webkit-transform: perspective(2000px) rotateY(180deg);
 transform: perspective(2000px) rotateY(180deg);
+visibility: hidden;
 }
 
 .flipcard div.front {
@@ -1239,6 +1240,7 @@ transform: perspective(2000px) rotateY(0deg);
 -moz-transform: perspective(2000px) rotateY(0);
 -webkit-transform: perspective(2000px) rotateY(0);
 transform: perspective(2000px) rotateY(0);
+visibility: visible;
 }
 .flip div.front {
 -webkit-transform: perspective(2000px) rotateY(-179.9deg);
@@ -1924,6 +1926,10 @@ body.metropolis #navigation {
 background: #180052;
 }
 
+body.metropolis .twoorless {
+width: 334px;
+}
+
 
 body.metropolis i.corner
 {
@@ -2012,8 +2018,35 @@ body.metropolis #status .card {
 background-color:#5b39aa;
 }
 
+body.metropolis #debuglink .card, body.metropolis #debuglink.card {
+background-color:#9a1095;
+}
+
+body.metropolis #teameurekalink .card, body.metropolis #teameurekalink.card {
+background-color:#c85130;
+}
+
+body.metropolis #statuslink .card, body.metropolis #statuslink.card {
+background-color:#0e900f;
+}
+
+body.metropolis #settingslink .card, body.metropolis #settingslink.card {
+background-color:#a72747;
+}
+
+body.metropolis #twitter .card {
+background-color:#337cda;
+}
+
+body.metropolis .linkcard:hover i.thumb {
+color: #FFF;
+}
+
+
+
+
 body.metropolis .smallcard .card i {
-right: -6px;
+left: -12px;
 font-size: 92px;
 color: #fff;
 }
@@ -2791,7 +2824,6 @@ background-position: top left;
 .twoorless {
 width:326px;
 }
-
 
    #bottom.mobilescroll {
       display: none;
