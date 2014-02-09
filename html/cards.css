@@ -485,6 +485,66 @@ left: -50px;
 top: 11px;
 }
 
+/* OVERLAY EDIT WHITELIST */
+
+#EDITwhitelist {
+position: absolute;
+z-index: 1000;
+width: 100%;
+top: 10px;
+left: 0;
+display:none;
+font-family: monospace;
+}
+
+#EDITwhitelist .editbox {
+padding:10px;
+background-color:#9c9c9c;
+}
+
+#EDITwhitelist .buttons {
+height: 53px;
+position: relative;
+font-family: 'Roboto', sans-serif;
+}
+
+#EDITwhitelist .editbox textarea{
+width:100%;
+height:150px;
+background-color: #fff;
+border: none;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+font-family: monospace;
+font-weight: 300;
+font-size: 15px;
+padding: 2px;
+word-wrap: normal;
+white-space: nowrap;
+}
+
+#EDITwhitelist .editbox input {
+width:100%;
+background-color: #fff;
+border: none;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+font-family: monospace;
+font-weight: 300;
+font-size: 15px;
+padding: 2px;
+word-wrap: normal;
+white-space: nowrap;
+}
+
+#EDITwhitelist .editbox input[readonly='readonly'], #EDITwhitelist .editbox textarea[readonly='readonly'] {
+background-color:#9c9c9c;
+}
+
+/* END OVERLAY */
+
 
 #slides > div {
 margin-top: 115px;
@@ -508,7 +568,7 @@ width:100%;
 
 .anchor {
 width:100%;
-overflow:hidden;
+/* TODO overflow:hidden; */
 }
 
 #page1 {
@@ -839,17 +899,20 @@ opacity: 1;
 /* DNS LIST */
 
 
-
-#customWHITEform .buttons div, #httpoff .buttons div, #customDNSform .buttons div, #customPassform .buttons div{
+.buttons div {
 position:absolute;
-top:109px;
 height:53px;
 text-align:center;
-width:163px;
+width:326px;
 line-height: 53px;
 font-size:24px;
 font-weight:100;
 background-color:#FFF;
+}
+
+#customWHITEform .buttons div, #httpoff .buttons div, #customDNSform .buttons div, #customPassform .buttons div{
+top:109px;
+width:163px;
 }
 
 #httpoff .buttons div {
@@ -858,9 +921,10 @@ top:124px;
 
 #customWHITEform, #customDNSform, #Passcustom .inputtable {
 padding-top:4px;
+z-index:10;
 }
 
-#customWHITEform .buttons div:hover, #httpoff .buttons div:hover, #customDNSform .buttons div:hover, #customPassform .buttons div:hover {
+.buttons div:hover, #editWHITE:hover {
 background-color:#FFC033;
 }
 
@@ -870,6 +934,40 @@ font-weight: 300;
 padding-top: 29px;
 text-align: center;
 }
+
+#editWHITE {
+left:-20px;
+bottom:-20px;
+cursor: pointer;
+background: #DDD;
+font-weight: 300;
+-moz-border-bottom-left-radius: 3px;
+-webkit-border-bottom-left-radius: 3px;
+border-bottom-left-radius: 3px; /* future proofing */
+-khtml-border-bottom-left-radius: 3px; /* for old Konqueror browsers */
+-moz-border-bottom-right-radius: 3px;
+-webkit-border-bottom-right-radius: 3px;
+border-bottom-right-radius: 3px; /* future proofing */
+-khtml-border-bottom-right-radius: 3px; /* for old Konqueror browsers */
+}
+
+#cancelWHITE {
+left:0;
+width: 49%;
+cursor: pointer;
+}
+
+#saveWHITE {
+right:0;
+width: 49%;
+cursor: pointer;
+}
+
+#saveWHITE:after {
+content: " whitelist to /data/eureka/apps.conf";
+}
+
+
 
 #CANCELcustomWHITE, #CANCELhttp, #CANCELcustomDNS, #CANCELpass {left:0px;
 cursor: pointer;
@@ -947,7 +1045,7 @@ width:288px;
 }
 
 
-.DNSloading, .Passloading, .actiontaken {
+.WHITEloading, .DNSloading, .Passloading, .actiontaken {
 padding-top:62px;
 position:absolute;
 bottom:0;
@@ -1003,6 +1101,8 @@ height:162px;
 overflow-y: scroll;
 
 background-color:#fff;
+
+z-index:10;
 }
 
 #WHITEselected, #DNSselected, #changePass {
@@ -2625,10 +2725,19 @@ body.metropolis #page2 .cards, body.metropolis #page3 .cards, body.metropolis #p
         transform: translate(792px, 0);
 }
 
+#saveWHITE:after {
+content: " whitelist";
+}
+
 
     }
 @media screen and (max-width: 792px) {
     #slides .cards {width:397px;}
+
+#saveWHITE:after {
+content: "";
+}
+
 
 .twoorless {
 float:left;
