@@ -12,6 +12,23 @@ $(window).scroll(function(event) {
         }
     });
 
+//OVERLAYS
+
+//edit whitelist
+
+$(document).on('click', '#editWHITE', function() {
+$('#EDITwhitelist').css("display","block");
+$('#page4 .cards .flipcard').css("display","none");
+$.scrollTo( {top:0, left:0}  );
+});
+
+$(document).on('click', '#cancelWHITE', function() {
+$('#EDITwhitelist').css("display","none");
+$('#page4 .cards .flipcard').css("display","block");
+$.scrollTo( {top:0, left:0}  );
+});
+
+
 //PAGES
 
 //Page2 (Team Eureka)
@@ -370,6 +387,68 @@ $(document).on('click', '#WHITEselected label', function() {
         $('#WHITEselection').removeClass("invisible");
 });
 
+function submitWHITE(){
+
+// var form = $('#customWHITEform');
+// var data = form.serialize();
+
+
+        $.ajax({
+                type: 'POST',
+                url: '?page=white',
+                cache: false,
+                data: $('#customWHITEform').serialize(),
+                beforeSend:function(){
+                        // this is where we append a loading image
+                        jQuery('#whitelist_update').empty();
+                        jQuery('#whitelist_update').html('<div class="cbot"><div class="WHITEloading">Updating...</div></div>');
+                },
+                success:function(data){
+                        // successful request; do something with the data
+                        jQuery('#whitelist_update').empty();
+                        jQuery('#whitelist_update').html(data);
+                },
+                error:function(){
+                        // failed request; give feedback to user
+                        jQuery('#whitelist_update').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                },
+                complete:function(){
+                }
+        });
+
+
+}
+
+
+
+//on submit (browser native enter key) - do nothing, do ajax on key 13 in special field only, not on not browser su
+$(document).on('submit', '#customWHITEform', function() {
+
+return false;
+
+});
+
+
+// on click on send
+
+$(document).on('click','#WHITEcustom #SENDcustomWHITE',function(e) {
+
+        $(submitWHITE);
+
+});
+
+// on enter
+
+$(document).on('keypress','#WHITEcustom #whitefield',function(e) {
+
+        if (e.which == 13)
+        {
+        $(submitWHITE);
+        }
+
+});
+
+
 
 
 
@@ -686,14 +765,13 @@ $(document).on('focus click', 'body', function(e) {
     }
 });
 
- 
+
 
 // SELECT DNS TEMPLATE
 
 //on('change') geht auch, aber dann nimmt er den bereits ausgewaehlten nicht. man haette die liste auch einfach unausgewaehlt lassen koennen... zu spaet.
 $(document).on('click', '#DNSselection input:radio', function() { 
 	var DNSselected = $(this).val();
-//        alert(DNSselected);
 
 	var useDHCP = '0';
 	
@@ -736,6 +814,72 @@ $(document).on('click', '#DNSselection input:radio', function() {
 		$('#DNScustom').addClass("show");
 //		$('#dns1field').focus();
 		}
+
+});
+
+// SELECT WHITELIST TEMPLATE
+
+$(document).on('click', '#WHITEselection input:radio', function() {
+        var WHITEselected = $(this).val();
+
+        if (WHITEselected != "3") {
+
+        $.ajax({
+                type: 'POST',
+                url: '?page=white',
+                data: { 'action': 'update', 'WhiteList/useSelection': WHITEselected },
+                cache: false,
+                beforeSend:function(){
+                        // this is where we append a loading image
+                        jQuery('#whitelist_update').empty();
+                        jQuery('#whitelist_update').html('<div class="cbot"><div class="WHITEloading">Updating...</div></div>');
+                },
+                success:function(data){
+                        // successful request; do something with the data
+                        jQuery('#whitelist_update').empty();
+                        jQuery('#whitelist_update').html(data);
+                },
+                error:function(){
+                        // failed request; give feedback to user
+                        jQuery('#whitelist_update').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                }
+        });
+
+        } else {
+                $('#WHITEcustom').addClass("show");
+                }
+
+});
+
+// WRITE WHITELIST FILE
+
+$(document).on('click', '#saveWHITE', function() {
+
+
+        $.ajax({
+                type: 'POST',
+                url: '?page=editwhite',
+                data: $('#editWHITEform').serialize(),
+                cache: false,
+                beforeSend:function(){
+                        // this is where we append a loading image
+			$('#EDITwhitelist textarea').attr('readonly','readonly');
+			$('#EDITwhitelist input[type="text"]').attr('readonly','readonly');
+                },
+                success:function(data){
+                        // successful request; do something with the data
+                        jQuery('#EDITwhitelist').empty();
+                        jQuery('#EDITwhitelist').html(data);
+                        $('#EDITwhitelist').css("display","none");
+                        $('#page4 .cards .flipcard').css("display","block");
+                        $.scrollTo( {top:0, left:0}  );
+                },
+                error:function(){
+                        // failed request; give feedback to user
+                        jQuery('#EDITwhitelist').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                }
+        });
+
 
 });
 
