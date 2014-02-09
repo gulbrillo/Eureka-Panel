@@ -205,15 +205,15 @@ int writeNewWhitelist()
 {
     char value[80];
     char applications[20000];
-    char enabledappids[1000];
-    char configuration[1000];
+    char enabledappids[20000];
+    char configuration[20000];
     cgiFormStringNoNewlines("action", value, 80);
 
     if(compStr(value, "update", sizearray(value)))
     {
 	cgiFormStringNoNewlines("applications", applications, 20000);
-        cgiFormStringNoNewlines("enabled_app_ids", enabledappids, 1000);
-        cgiFormStringNoNewlines("configuration", configuration, 1000);
+        cgiFormStringNoNewlines("enabled_app_ids", enabledappids, 20000);
+        cgiFormStringNoNewlines("configuration", configuration, 20000);
 
 	FILE *f = fopen("/data/eureka/apps.conf", "w");
 	fprintf(f, ")]}'\n{\"applications\":[%s],\"enabled_app_ids\":[%s],\"configuration\":{%s}}", applications, enabledappids, configuration);
@@ -354,6 +354,7 @@ int cgiMain()
                 cgiHeaderContentType("text/html");
         if( CookieCheck() ) {
                 processPostData();
+//		ptr_file=popen("busybox killall eureka_shell","r");	
                 card_whitelist_front();
         }
         }
@@ -362,6 +363,7 @@ int cgiMain()
                 cgiHeaderContentType("text/html");
         if( CookieCheck() ) {
                 writeNewWhitelist();
+//		ptr_file=popen("busybox killall eureka_shell","r");
                 card_whitelist_overlay();
         }
         }
@@ -556,7 +558,7 @@ printf("\n</script>");
 //      printf("Content-type: text/html\n");
 
 	printf("Set-Cookie: %s=%s; Path=/; Domain=%s; HttpOnly\n", cname, cvalue, cgiServerName);
-	printf("Location: /test/\n\n");
+	printf("Location: /\n\n");
 
 
 //		cgiHeaderLocation(location);
@@ -667,7 +669,7 @@ if( CookieCheck() ) {
 
  printf("\n<script type=\"text/javascript\">");
  printf("\n$(function() {");
- printf("\nwindow.location.replace(\"/test/\");");
+ printf("\nwindow.location.replace(\"/\");");
  printf("\n});");
  printf("\n</script>");
 
