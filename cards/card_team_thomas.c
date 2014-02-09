@@ -36,7 +36,7 @@ printf("<div class=\"cbot\">");
     printf("\n<div class=\"ctop\">");
 
     printf("\n<div class=\"title\">Thomas</div>");
-    printf("\n<div class=\"description\">Thomas Hebb (tchebb) is a picky perfectionist, the last barrier to low-quality code. His early insight and development formed the basis for the rooted Chromecast.  Thomas is currently in hight school studying computer science. (Massachusetts, USA)</div>");
+    printf("\n<div class=\"description\">Thomas Hebb (tchebb) is a picky perfectionist, the last barrier to low-quality code. His early insight and development formed the basis for the rooted Chromecast.  Thomas is currently in high school studying computer science. (Massachusetts, USA)</div>");
 
     printf("\n</div>");
 
