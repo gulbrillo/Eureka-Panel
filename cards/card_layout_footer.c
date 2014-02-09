@@ -66,7 +66,7 @@ printf("<ul><li id=\"settings_theme\">");
 settings_theme();
 
 printf("</li><li><ul><form id=\"elements\">");
-printf("<li><label class=\"checked\">Network</label></li><li><label class=\"checked\">Status</label></li><li><label class=\"checked\">DNS</label></li><li><label class=\"checked\">WiFi</label></li><li><label class=\"checked\">Security</label></li><li><label class=\"checked\">Services</label></li><li><label class=\"checked\">News</label></li></form></ul>Elements</li></ul>");
+printf("<li><label class=\"checked\">Animations</label></li><li><label class=\"checked\">Compatibility</label></li></form></ul>Mode</li></ul>");
 
 printf("</div></div></div>");
 

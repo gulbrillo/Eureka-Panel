@@ -57,6 +57,7 @@
 #include "cards/card_team_simon.c"
 #include "cards/card_whitelist.c"
 #include "cards/card_whitelist_front.c"
+#include "cards/card_whitelist_overlay.c"
 #include "cards/card_whitelist_back.c"
 
 
@@ -200,7 +201,27 @@ void writenewPass()
 
 }
 
+int writeNewWhitelist()
+{
+    char value[80];
+    char applications[20000];
+    char enabledappids[1000];
+    char configuration[1000];
+    cgiFormStringNoNewlines("action", value, 80);
 
+    if(compStr(value, "update", sizearray(value)))
+    {
+	cgiFormStringNoNewlines("applications", applications, 20000);
+        cgiFormStringNoNewlines("enabled_app_ids", enabledappids, 1000);
+        cgiFormStringNoNewlines("configuration", configuration, 1000);
+
+	FILE *f = fopen("/data/eureka/apps.conf", "w");
+	fprintf(f, ")]}'\n{\"applications\":[%s],\"enabled_app_ids\":[%s],\"configuration\":{%s}}", applications, enabledappids, configuration);
+	fclose(f);
+    }
+
+
+}
 
 int processPostData()
 {
@@ -327,6 +348,22 @@ int cgiMain()
             web_module_debug(decodedCommand);
 	    card_layout_footer();
 	}
+        }
+	else if ( compStr(strPage, "white", sizearray(strPage)) )
+        {
+                cgiHeaderContentType("text/html");
+        if( CookieCheck() ) {
+                processPostData();
+                card_whitelist_front();
+        }
+        }
+        else if ( compStr(strPage, "editwhite", sizearray(strPage)) )
+        {
+                cgiHeaderContentType("text/html");
+        if( CookieCheck() ) {
+                writeNewWhitelist();
+                card_whitelist_overlay();
+        }
         }
         else if ( compStr(strPage, "dns", sizearray(strPage)) )
         {

@@ -59,6 +59,7 @@ int printDNSProviders()
     else
     {
         selectedProviderText = "";
+	selectedProviderID = "local";
     }
     printf("\n<div id=\"other\"><input type=\"radio\" name=\"SmartDNS/selected\" value=\"other\" id=\"other-radio\" %s></input><label class=\"%s\" for=\"other-radio\">Custom servers</label></div>", selectedProviderText, selectedProviderText);
 

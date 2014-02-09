@@ -43,10 +43,10 @@ int printWhitelistProviders()
 
     printf("<div class=\"WHITEname invisible\" id=\"WHITEselection\">");
 
-    printf("\n<div id=\"WhitelistProvider0\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"local\" id=\"local-radio\" %s></input><label class=\"%s\" for=\"local-radio\">Team Eureka</label></div>", WhitelistProvider0selected, WhitelistProvider0selected);
-    printf("\n<div id=\"WhitelistProvider1\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"local\" id=\"local-radio\" %s></input><label class=\"%s\" for=\"local-radio\">Google (default)</label></div>", WhitelistProvider1selected, WhitelistProvider1selected);
-    printf("\n<div id=\"WhitelistProvider2\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"local\" id=\"local-radio\" %s></input><label class=\"%s\" for=\"local-radio\">Locally stored</label></div>", WhitelistProvider2selected, WhitelistProvider2selected);
-    printf("\n<div id=\"WhitelistProvider3\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"local\" id=\"local-radio\" %s></input><label class=\"%s\" for=\"local-radio\">Custom server</label></div>", WhitelistProvider3selected, WhitelistProvider3selected);
+    printf("\n<div id=\"WhitelistProvider0\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"0\" id=\"wleureka-radio\" %s></input><label class=\"%s\" for=\"wleureka-radio\">Team Eureka</label></div>", WhitelistProvider0selected, WhitelistProvider0selected);
+    printf("\n<div id=\"WhitelistProvider1\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"1\" id=\"wlgoogle-radio\" %s></input><label class=\"%s\" for=\"wlgoogle-radio\">Google (default)</label></div>", WhitelistProvider1selected, WhitelistProvider1selected);
+    printf("\n<div id=\"WhitelistProvider2\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"2\" id=\"wllocal-radio\" %s></input><label class=\"%s\" for=\"wllocal-radio\">Locally stored</label></div>", WhitelistProvider2selected, WhitelistProvider2selected);
+    printf("\n<div id=\"WhitelistProvider3\"><input type=\"radio\" name=\"WhiteList/useSelection\" value=\"3\" id=\"wlcustom-radio\" %s></input><label class=\"%s\" for=\"wlcustom-radio\">Custom server</label></div>", WhitelistProvider3selected, WhitelistProvider3selected);
 
 
     printf("</div>");
@@ -60,29 +60,15 @@ return 1;
 
 int card_whitelist_front(void)
 {
-    FILE *ptr_file;
-    char buf[1000];
-    char *nameservers;
-    char *nameserver;
-    char *dns1;
-    char *dns2;
+
+    char selectedWhitelistProvider[1024];
+    char customwhiteserver[1024];
+    read_config_var("WhiteList", "customURL", customwhiteserver);
+
 
     printf("\n<div class=\"cbot\">");
        printWhitelistProviders();
 
-// CURRENT ACTIVE WHITELIST
-
-ptr_file = popen("cat /etc/resolv.conf | grep \"nameserver\" | busybox tr 'nameserver\n' ' '","r");
-    while (fgets(buf,1000, ptr_file)!=NULL)
-    {        nameservers = buf;    }
-fclose(ptr_file);
-
-    //DNS1
-        nameserver = strtok(nameservers, " ");
-        dns1 = nameserver;
-    //DNS2
-        nameserver = strtok(NULL, " ");
-        dns2 = nameserver;
 
 
 // CUSTOM DNS FORM
@@ -90,8 +76,7 @@ fclose(ptr_file);
 
     printf("\n<form id=\"customWHITEform\">");
     printf("\n<input name=\"action\" type=\"hidden\" id=\"action\" value=\"update\">");
-    printf("\n<input name=\"DNS/useDHCP\" type=\"hidden\" id=\"useDHCP\" value=\"0\">");
-    printf("\n<input name=\"SmartDNS/selected\" type=\"hidden\" id=\"useDHCP\" value=\"other\">");
+    printf("\n<input name=\"WhiteList/useSelection\" type=\"hidden\" id=\"useCustomWhite\" value=\"3\">");
 
     printf("\n<div class=\"table\">");
 
@@ -100,7 +85,7 @@ fclose(ptr_file);
     printf("\n</div>");
 
     printf("\n<div class=\"row\">");
-    printf("\n<div><input value=\"%s\" type=\"text\" class=\"dnsinput\" name=\"DNS/Secondary\"  id=\"dns2field\"  autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", dns2);
+    printf("\n<div><input value=\"%s\" type=\"text\" class=\"whiteinput\" name=\"WhiteList/customURL\"  id=\"whitefield\"  autocorrect=\"off\" autocomplete=\"off\" autocapitalize=\"off\" spellcheck=\"false\"/></div>", customwhiteserver);
     printf("\n</div>");
 
     printf("\n</div>");
@@ -116,25 +101,27 @@ fclose(ptr_file);
     printf("\n</div>");
 
 
-    printf("\n<div class=\"table\">");
-
-
-    printf("\n<div class=\"row\">");
-    printf("\n<div>Primary</div>");
-
-	printf( "\n<div>%s</div>", dns1 );
-
-    printf("\n</div>");
-
-
-    printf("\n<div class=\"row\">");
-    printf("\n<div>Secondary</div>");
-
-        printf( "\n<div>%s</div>", dns2 );
-
-    printf("\n</div>");
-
-    printf("\n</div>");
+    read_config_var("WhiteList", "useSelection", selectedWhitelistProvider);
+    if(compStr(selectedWhitelistProvider, "0", sizearray(selectedWhitelistProvider)))
+    {
+        printf("\nWhitelist updated regularly from Team Eureka servers. If you want to edit the whitelist manually, select 'Locally stored' from the menu.");
+    }
+    else if(compStr(selectedWhitelistProvider, "1", sizearray(selectedWhitelistProvider)))
+    {
+	printf("\nWhitelist updated regularly from Google servers. If you want to edit the whitelist manually, select 'Locally stored' from the menu.");
+    }
+    else if(compStr(selectedWhitelistProvider, "2", sizearray(selectedWhitelistProvider)))
+    {
+        printf("\n<div style=\"margin-bottom:41px;\">Whitelist stored locally on Chromecast in file /data/eureka/apps.conf.</div><div class=\"buttons\"><div id=\"editWHITE\">Edit whitelist</div></div>");
+    }
+    else if(compStr(selectedWhitelistProvider, "3", sizearray(selectedWhitelistProvider)))
+    {
+	printf("\nWhitelist updated regularly from server <div style=\"overflow:hidden;white-space:nowrap;width:306px;\">%s.</div> If you want to edit the whitelist manually, select 'Locally stored' from the menu.",customwhiteserver);
+    }
+    else
+    {
+	printf("\nIf you would like to edit the whitelist manually, please select 'Locally stored' from the menu.");
+    }
 
 
 

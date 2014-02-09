@@ -10,7 +10,7 @@ printf("<div id=\"whitelist\" class=\"flipcard\">");
 
 // front
 
-  printf("\n<div id=\"dns_front\" class=\"card front\">");
+  printf("\n<div id=\"whitelist_front\" class=\"card front\">");
 
     printf("\n<div class=\"topright\">");
     printf("\n<i onclick=\"document.querySelector('#whitelist').classList.toggle('flip');\" class=\"corner icon-info\"></i>");
@@ -32,4 +32,7 @@ printf("</div>");
 
 printf("</div>");
 
+    printf("\n<div id=\"EDITwhitelist\">");
+	card_whitelist_overlay();
+    printf("</div>");
 }

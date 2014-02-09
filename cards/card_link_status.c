@@ -13,7 +13,7 @@ int card_status_team(void)
     printf("\n<div class=\"ctop\"><i class=\"icon-meter2 thumb\"></i>");
     
     printf("\n<div class=\"title\">Status</div>");
-    printf("\n<div class=\"description\">Control, system load, connectivity</div>");
+    printf("\n<div class=\"description\">Control / system / connectivity</div>");
 
 
     printf("\n<div class=\"cbot\">");
