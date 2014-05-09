@@ -33,6 +33,7 @@ printf("</div>");
 printf("</div>");
 
     printf("\n<div id=\"EDITwhitelist\">");
-	card_whitelist_overlay();
+//	loaded via ajax, on demand only
+//	card_whitelist_overlay();
     printf("</div>");
 }

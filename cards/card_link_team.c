@@ -18,7 +18,7 @@ int card_link_team(void)
 
     printf("\n<div class=\"cbot\">");
 
-    printf("\n<div><img src=\"images/eurekalogo.svg\" width=\"286\" height=\"129\"></div>");
+    printf("\n<div><img src=\"images/eurekalogo.svg\" width=\"286\" height=\"116\"></div>");
 
     printf("\n</div>");
 

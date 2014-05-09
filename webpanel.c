@@ -59,6 +59,9 @@
 #include "cards/card_whitelist_front.c"
 #include "cards/card_whitelist_overlay.c"
 #include "cards/card_whitelist_back.c"
+#include "cards/card_updates.c"
+#include "cards/card_updates_front.c"
+#include "cards/card_updates_back.c"
 
 
 #define sizearray(a)  (sizeof(a) / sizeof((a)[0]))

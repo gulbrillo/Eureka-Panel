@@ -66,7 +66,7 @@ printf("<ul><li id=\"settings_theme\">");
 settings_theme();
 
 printf("</li><li><ul><form id=\"elements\">");
-printf("<li><label class=\"checked\">Animations</label></li><li><label class=\"checked\">Compatibility</label></li></form></ul>Mode</li></ul>");
+printf("<li><label class=\"checked\">Animations</label></li><li><label class=\"checked\">Invert colors</label></li></form></ul>Mode</li></ul>");
 
 printf("</div></div></div>");
 

@@ -112,7 +112,7 @@ int card_whitelist_front(void)
     }
     else if(compStr(selectedWhitelistProvider, "2", sizearray(selectedWhitelistProvider)))
     {
-        printf("\n<div style=\"margin-bottom:41px;\">Whitelist stored locally on Chromecast in file /data/eureka/apps.conf.</div><div class=\"buttons\"><div id=\"editWHITE\">Edit whitelist</div></div>");
+        printf("\n<div style=\"margin-bottom:41px;\">Whitelist stored locally on Chromecast in file /data/eureka/apps.conf.</div><div class=\"buttons\"><div id=\"editWHITE\">edit</div></div>");
     }
     else if(compStr(selectedWhitelistProvider, "3", sizearray(selectedWhitelistProvider)))
     {

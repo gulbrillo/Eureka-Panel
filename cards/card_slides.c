@@ -48,6 +48,7 @@ card_dns();
 card_security();
 card_services();
 card_whitelist();
+card_updates();
 
 printf("\n<div class=\"clearspace\"></div>");
 

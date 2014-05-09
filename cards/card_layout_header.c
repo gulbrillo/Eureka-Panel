@@ -37,6 +37,7 @@ printf("\n  <link href=\"cards.css\" media=\"screen\" rel=\"stylesheet\" type=\"
 
 printf("\n<script type='text/javascript' src='js/jquery-1.10.2.min.js'></script>");
 printf("\n<script type='text/javascript' src='js/jquery.scrollTo-min.js'></script>");
+printf("\n<script type='text/javascript' src='js/jquery.ba-hashchange.min.js'></script>");
 printf("\n<script type='text/javascript' src='js/ajax.js'></script>");
 
 printf("\n</head>");

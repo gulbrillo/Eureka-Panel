@@ -256,7 +256,7 @@ static int getkeystring(INI_FILETYPE *fp, const TCHAR *Section, const TCHAR *Key
   len = (Key != NULL) ? (int)_tcslen(Key) : 0;
   idx = -1;
   do {
-    if (!ini_read(LocalBuffer,INI_BUFFERSIZE,fp) || *(sp = skipleading(LocalBuffer)) == '[')
+      if (!ini_read(LocalBuffer,INI_BUFFERSIZE,fp) || *(sp = skipleading(LocalBuffer)) == '[')
       return 0;
     sp = skipleading(LocalBuffer);
     ep = _tcschr(sp, '='); /* Parse out the equal sign */
